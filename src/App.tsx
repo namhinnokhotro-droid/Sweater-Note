@@ -98,7 +98,7 @@ export default function App() {
       setSweaters(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Sweater[]);
       setIsLoading(false);
     }, (error) => {
-      console.error("Firestore sweaters error:", error);
+      handleFirestoreError(error, OperationType.LIST, 'sweaters');
       setIsLoading(false);
     });
 
@@ -106,13 +106,13 @@ export default function App() {
     const qWorkers = query(collection(db, 'workers'), orderBy('joinedAt', 'desc'));
     const unsubWorkers = onSnapshot(qWorkers, (snapshot) => {
       setWorkers(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as Worker[]);
-    }, (error) => console.error("Firestore workers error:", error));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'workers'));
 
     // Logs sub
     const qLogs = query(collection(db, 'workLogs'), orderBy('date', 'desc'));
     const unsubLogs = onSnapshot(qLogs, (snapshot) => {
       setWorkLogs(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })) as WorkLog[]);
-    }, (error) => console.error("Firestore logs error:", error));
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'workLogs'));
 
     return () => {
       unsubSweaters();
