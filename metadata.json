@@ -1,0 +1,6 @@
+{
+  "name": "Sweater Note",
+  "description": "Professional garments management and production tracking system with interactive dashboards.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": []
+}

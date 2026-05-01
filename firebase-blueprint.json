@@ -1,0 +1,326 @@
+{
+  "entities": {
+    "Sweater": {
+      "title": "Sweater",
+      "description": "A sweater design costing record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "image": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "costing": { "$ref": "#/entities/CostingDetails" },
+        "reactions": { "type": "object" },
+        "comments": {
+          "type": "array",
+          "items": { "type": "object" }
+        }
+      },
+      "required": ["id", "name", "costing"]
+    },
+    "Worker": {
+      "title": "Worker",
+      "description": "A production worker profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "cardNumber": { "type": "string" },
+        "lineNumber": { "type": "string" },
+        "image": { "type": "string" },
+        "joinedAt": { "type": "number" }
+      },
+      "required": ["id", "name", "joinedAt"]
+    },
+    "WorkLog": {
+      "title": "WorkLog",
+      "description": "A record of work done by a worker",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "workerId": { "type": "string" },
+        "sweaterId": { "type": "string" },
+        "styleNumber": { "type": "string" },
+        "operation": { "type": "string" },
+        "quantity": { "type": "number" },
+        "rate": { "type": "number" },
+        "total": { "type": "number" },
+        "date": { "type": "number" }
+      },
+      "required": ["id", "workerId", "sweaterId", "operation", "quantity", "rate", "total", "date"]
+    },
+    "CostingDetails": {
+      "title": "CostingDetails",
+      "description": "Breakdown of sweater production costs",
+      "type": "object",
+      "properties": {
+        "styleNumber": { "type": "string" },
+        "pocket": { "type": "number" },
+        "stitch": { "type": "number" },
+        "shoulder": { "type": "number" },
+        "armhole": { "type": "number" },
+        "sidejoint": { "type": "number" },
+        "neck": { "type": "number" },
+        "hood": { "type": "number" },
+        "paiping": { "type": "number" },
+        "placket": { "type": "number" },
+        "ribCuff": { "type": "number" },
+        "bottom": { "type": "number" },
+        "vJoint": { "type": "number" },
+        "pottyJoint": { "type": "number" },
+        "sample": { "type": "number" },
+        "complete": { "type": "number" },
+        "newOption": { "type": "number" }
+      }
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A chat message",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderImage": { "type": "string" },
+        "text": { "type": "string" },
+        "audio": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "senderId", "senderName", "createdAt"]
+    },
+    "QILog": {
+      "title": "QILog",
+      "description": "A quality inspection record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "workerId": { "type": "string" },
+        "workerName": { "type": "string" },
+        "workerImage": { "type": "string" },
+        "cardNumber": { "type": "string" },
+        "tcNumber": { "type": "string" },
+        "machineNumber": { "type": "string" },
+        "qty": { "type": "number" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "workerId", "workerName", "cardNumber", "qty", "createdAt"]
+    },
+    "Call": {
+      "title": "Call",
+      "description": "A video/audio call signaling record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "callerId": { "type": "string" },
+        "callerName": { "type": "string" },
+        "targetId": { "type": "string" },
+        "type": { "type": "string", "enum": ["audio", "video"] },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected", "ended"] },
+        "createdAt": { "type": "number" }
+      }
+    },
+    "CompanyRate": {
+      "title": "CompanyRate",
+      "description": "Operation rates for a specific company",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "companyName": { "type": "string" },
+        "styles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "styleName": { "type": "string" },
+              "imageUrl": { "type": "string" },
+              "rates": { "type": "object" }
+            }
+          }
+        },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "companyName", "styles", "createdAt"]
+    },
+    "ManpowerReport": {
+      "title": "ManpowerReport",
+      "description": "A daily manpower report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string" },
+        "companyName": { "type": "string" },
+        "reportTitle": { "type": "string" },
+        "sections": { "type": "array", "items": { "type": "object" } },
+        "summary": { "type": "object" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "date", "companyName", "sections", "summary"]
+    },
+    "ProductionReport": {
+      "title": "ProductionReport",
+      "description": "A daily production report",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string" },
+        "shift": { "type": "string" },
+        "companyName": { "type": "string" },
+        "metrics": { "type": "object" },
+        "breakdown": { "type": "object" },
+        "secondary": { "type": "object" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "date", "shift", "metrics", "breakdown", "secondary"]
+    },
+    "Ad": {
+      "title": "Ad",
+      "description": "An advertisement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "link": { "type": "string" },
+        "color": { "type": "string" },
+        "image": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "title", "description", "link", "color"]
+    },
+    "SupervisorEntry": {
+      "title": "SupervisorEntry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "cardNumber": { "type": "string" },
+        "presence": { "type": "string" },
+        "absent": { "type": "string" },
+        "target": { "type": "string" },
+        "achievement": { "type": "string" }
+      }
+    },
+    "SupervisorReport": {
+      "title": "SupervisorReport",
+      "description": "Supervisor's daily performance tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string" },
+        "entries": { "type": "array", "items": { "$ref": "SupervisorEntry" } },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "date", "entries"]
+    },
+    "SalaryReport": {
+      "title": "Salary Report",
+      "description": "Manual monthly production sheet for workers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "workerId": { "type": "string" },
+        "month": { "type": "number" },
+        "year": { "type": "number" },
+        "headers": {
+          "type": "object",
+          "properties": {
+            "companyName": { "type": "string" },
+            "name": { "type": "string" },
+            "card": { "type": "string" },
+            "month": { "type": "string" },
+            "section": { "type": "string" },
+            "supervisor": { "type": "string" },
+            "line": { "type": "string" },
+            "year": { "type": "string" }
+          }
+        },
+        "styles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "grid": { "type": "object" },
+        "signatures": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "remarks": { "type": "string" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "workerId", "month", "year", "headers", "styles", "grid", "updatedAt"]
+    },
+    "ImportantNote": {
+      "title": "Important Note",
+      "description": "Private notes for important personnel",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "personName": { "type": "string" },
+        "role": { "type": "string" },
+        "content": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "personName", "content", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/important_notes/{noteId}": {
+      "schema": "ImportantNote",
+      "description": "Stored private notes for VIPs"
+    },
+    "/sweaters/{sweaterId}": {
+      "schema": "Sweater",
+      "description": "Collection of sweater designs"
+    },
+    "/workers/{workerId}": {
+      "schema": "Worker",
+      "description": "Collection of worker profiles"
+    },
+    "/workLogs/{logId}": {
+      "schema": "WorkLog",
+      "description": "Collection of work records"
+    },
+    "/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Global chat messages"
+    },
+    "/problems/{problemId}": {
+      "schema": "Problem",
+      "description": "Reported problems and shortages"
+    },
+    "/qi_logs/{logId}": {
+      "schema": "QILog",
+      "description": "Quality inspection logs"
+    },
+    "/calls/{callId}": {
+      "schema": "Call",
+      "description": "Real-time call signaling"
+    },
+    "/company_rates/{rateId}": {
+      "schema": "CompanyRate",
+      "description": "Company-specific operation rates"
+    },
+    "/manpower_reports/{reportId}": {
+      "schema": "ManpowerReport",
+      "description": "Daily manpower reports"
+    },
+    "/production_reports/{reportId}": {
+      "schema": "ProductionReport",
+      "description": "Daily production reports"
+    },
+    "/ads/{adId}": {
+      "schema": "Ad",
+      "description": "Custom advertisements"
+    },
+    "/supervisor_reports/{reportId}": {
+      "schema": "SupervisorReport",
+      "description": "Supervisor daily grids"
+    },
+    "/salary_reports/{reportId}": {
+      "schema": "SalaryReport",
+      "description": "Monthly production sheet records"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Phase 3: Primitive Definitions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    function incoming() {
+      return request.resource.data;
+    }
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation Helpers
+    function isValidSupervisorEntry(entry) {
+      return entry.id is string && 
+             entry.name is string && entry.name.size() <= 100 &&
+             entry.cardNumber is string && entry.cardNumber.size() <= 50 &&
+             entry.presence is string && entry.presence.size() <= 1 &&
+             entry.absent is string && entry.absent.size() <= 1;
+    }
+
+    function isValidSupervisorReport(data) {
+      return data.id is string && 
+             data.date is string && 
+             data.entries is list &&
+             data.entries.size() <= 100;
+    }
+
+    // 1. Supervisor Reports
+    match /supervisor_reports/{reportId} {
+      allow get, list: if true;
+      allow create: if isValidSupervisorReport(incoming());
+      allow update: if isValidSupervisorReport(incoming());
+      allow delete: if true; // Client-side password protection as requested
+    }
+
+    // 2. Other collections (permissive as per app reqs)
+    match /sweaters/{id} { allow read, write: if true; }
+    match /workers/{id} { allow read, write: if true; }
+    match /workLogs/{id} { allow read, write: if true; }
+    match /messages/{id} { allow read, write: if true; }
+    match /problems/{id} { allow read, write: if true; }
+    match /qi_logs/{id} { allow read, write: if true; }
+    match /calls/{id} { allow read, write: if true; }
+    match /calls/{id}/callerCandidates/{cid} { allow read, write: if true; }
+    match /calls/{id}/calleeCandidates/{cid} { allow read, write: if true; }
+    match /company_rates/{id} { allow read, write: if true; }
+    match /manpower_reports/{id} { allow read, write: if true; }
+    match /production_reports/{id} { allow read, write: if true; }
+    match /salary_reports/{id} { allow read, write: if true; }
+    match /calculators/{id} { allow read, write: if true; }
+    match /important_notes/{id} { allow read, write: if true; }
+    match /ads/{id} { allow read, write: if true; }
+    
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+  }
+}
